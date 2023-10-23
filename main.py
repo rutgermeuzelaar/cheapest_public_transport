@@ -6,19 +6,19 @@ cursor = connection.cursor()
 result = cursor.execute("""
                 SELECT record_id FROM general_info
                         """)
-result_list = result.fetchall()
-max_record = len(result_list)
+initial_result_list = result.fetchall()
+result_list = [i[0] for i in initial_result_list]
 
 # Supply travel week as a dictionary
-week_1 = {'mo': 'spits', 'tu': 'spits', 'we': 'spits', 'th': 'spits', 'fr': None, 'sa': None, 'su': None}
-week_2 = {'mo': None, 'tu': 'spits', 'we': 'spits', 'th': 'spits', 'fr': 'spits', 'sa': None, 'su': None}
-week_3 = {'mo': 'spits', 'tu': 'spits', 'we': 'spits', 'th': 'spits', 'fr': None, 'sa': None, 'su': None}
-week_4 = {'mo': 'spits', 'tu': 'spits', 'we': 'spits', 'th': 'spits', 'fr': 'spits', 'sa': None, 'su': None}
+week_1 = {'mo': None, 'tu': None, 'we': 'dal', 'th': 'dal', 'fr': 'dal', 'sa': None, 'su': None}
+week_2 = {'mo': None, 'tu': None, 'we': 'dal', 'th': 'dal', 'fr': 'dal', 'sa': None, 'su': None}
+week_3 = {'mo': None, 'tu': None, 'we': None, 'th': 'dal', 'fr': 'dal', 'sa': None, 'su': None}
+week_4 = {'mo': None, 'tu': None, 'we': None, 'th': 'dal', 'fr': 'dal', 'sa': None, 'su': None}
 month_list = [week_1, week_2, week_3, week_4]
 month_cost_dict = {}
 cheapest_ns_list = []
 cheapest_qbuzz_list = []
-for record_id in range(1, max_record + 1):
+for record_id in result_list:
     month_cost_dict.setdefault(record_id)
     month_total_with_subscription = 0
     subscription = class_subscription.Subscription(record_id)

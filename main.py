@@ -42,21 +42,25 @@ for week in month_list:
     month_total_no_subscription_ns += no_subscription_ns.calculate_week_cost(week)
     month_total_no_subscription_qbuzz += no_subscription_qbuzz.calculate_week_cost(week)
 print(f"The cost of this configuration with no Qbuzz subscription is {round(month_total_no_subscription_qbuzz, 2)}.")
-print(f"The cost of this configuration with no NS subscription is {round(month_total_no_subscription_ns, 2)}.\n")
+print(f"The cost of this configuration with no NS subscription is {round(month_total_no_subscription_ns, 2)}.")
+print(f"The total cost of this configuration without a subscription is {round(month_total_no_subscription_qbuzz + month_total_no_subscription_ns, 2)}\n")
 
 # Cheapest subscriptions
 cheapest_qbuzz_subscription_record_id = cheapest_qbuzz_list[0]
 cheapest_qbuzz_subscription = class_subscription.Subscription(cheapest_qbuzz_subscription_record_id)
+cheapest_qbuzz_subscription_cost = month_cost_dict.get(cheapest_qbuzz_subscription_record_id)
 cheapest_ns_subscription_record_id = cheapest_ns_list[0]
 cheapest_ns_subscription = class_subscription.Subscription(cheapest_ns_subscription_record_id)
+cheapest_ns_subscription_cost = month_cost_dict.get(cheapest_ns_subscription_record_id)
 
 # Is there a subscription cheaper, if so, which?
-if month_total_no_subscription_qbuzz > month_cost_dict.get(cheapest_qbuzz_subscription_record_id):
+if month_total_no_subscription_qbuzz > cheapest_qbuzz_subscription_cost:
     print(f"The cheapest Qbuzz subscription for this configuration is: "
-          f"{cheapest_qbuzz_subscription.subscription_name}, whichs costs: {month_cost_dict.get(cheapest_qbuzz_subscription_record_id)}.")
-    print(f"You save {round(month_total_no_subscription_qbuzz - month_cost_dict.get(cheapest_qbuzz_subscription_record_id), 2)} this month by using this subscription.")
-if month_total_no_subscription_ns > month_cost_dict.get(cheapest_ns_subscription_record_id):
+          f"{cheapest_qbuzz_subscription.subscription_name}, which costs: {cheapest_qbuzz_subscription_cost}.")
+    print(f"You save {round(month_total_no_subscription_qbuzz - cheapest_qbuzz_subscription_cost, 2)} this month by using this subscription.")
+if month_total_no_subscription_ns > cheapest_ns_subscription_cost:
     print(f"The cheapest NS subscription for this configuration is: "
-          f"{cheapest_ns_subscription.subscription_name}, whichs costs: {month_cost_dict.get(cheapest_ns_subscription_record_id)}.")
-    print(f"You save {round(month_total_no_subscription_ns - month_cost_dict.get(cheapest_ns_subscription_record_id), 2)} this month by using this subscription.")
-print(month_cost_dict)
+          f"{cheapest_ns_subscription.subscription_name}, which costs: {cheapest_ns_subscription_cost}.")
+    print(f"You save {round(month_total_no_subscription_ns - cheapest_ns_subscription_cost, 2)} this month by using this subscription.")
+# print(month_cost_dict)
+print(f"The total costs for this configuration, with the suggested subscriptions, totals {cheapest_qbuzz_subscription_cost + cheapest_ns_subscription_cost}")
